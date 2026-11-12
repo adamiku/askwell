@@ -1,0 +1,14 @@
+{
+  "name": "@askwell/widget",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "build": "esbuild src/index.ts --bundle --minify --format=iife --target=es2020 --outfile=dist/widget.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
