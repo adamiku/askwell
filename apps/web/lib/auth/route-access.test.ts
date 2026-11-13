@@ -1,3 +1,4 @@
+import { API_ERROR_STATUS, ApiErrorResponse } from "@askwell/shared";
 import { describe, expect, it } from "vitest";
 import { isApiPath, isProtectedPath, unauthorizedResponse } from "./route-access";
 
@@ -43,9 +44,8 @@ describe("isApiPath", () => {
 describe("unauthorizedResponse", () => {
   it("returns 401 with the error shape", async () => {
     const res = unauthorizedResponse();
-    expect(res.status).toBe(401);
-    const body = (await res.json()) as { error: { code: string; message: string } };
+    expect(res.status).toBe(API_ERROR_STATUS.unauthorized);
+    const body = ApiErrorResponse.parse(await res.json());
     expect(body.error.code).toBe("unauthorized");
-    expect(typeof body.error.message).toBe("string");
   });
 });

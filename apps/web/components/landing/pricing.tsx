@@ -1,5 +1,5 @@
 import { GlassPanel } from "../glass-panel";
-import { PLAN_SUMMARIES } from "./plans";
+import { PRICING_COLUMNS } from "./pricing-rows";
 
 export function Pricing() {
   return (
@@ -8,7 +8,7 @@ export function Pricing() {
         Pricing
       </h2>
       <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {PLAN_SUMMARIES.map((plan) => (
+        {PRICING_COLUMNS.map((plan) => (
           <div key={plan.id} className="lp-reveal">
             <GlassPanel className="h-full p-6">
               <h3 className="text-xl font-medium">{plan.name}</h3>

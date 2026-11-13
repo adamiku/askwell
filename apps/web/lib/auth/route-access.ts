@@ -1,3 +1,5 @@
+import { API_ERROR_STATUS, type ApiErrorResponse } from "@askwell/shared";
+
 /**
  * Which paths need an owner session. Pure so it can be tested without Clerk.
  * Everything not listed here is public (`/`, `/embed`, `/api/widget/*`,
@@ -26,10 +28,10 @@ export function isApiPath(pathname: string): boolean {
   return path === "/api" || path.startsWith("/api/");
 }
 
-/** The error shape from project.md §8. */
+/** The error shape from project.md §8, typed by the shared contract. */
 export function unauthorizedResponse(): Response {
-  return Response.json(
-    { error: { code: "unauthorized", message: "Sign in to use this endpoint." } },
-    { status: 401 },
-  );
+  const body: ApiErrorResponse = {
+    error: { code: "unauthorized", message: "Sign in to use this endpoint." },
+  };
+  return Response.json(body, { status: API_ERROR_STATUS.unauthorized });
 }
