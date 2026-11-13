@@ -1,3 +1,4 @@
+// Clerk middleware. Reads NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY from the environment.
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import {
   isApiPath,
