@@ -16,6 +16,8 @@ export const KNOWLEDGE_FILE_EXTENSIONS = {
 export const KNOWLEDGE_STATUSES = ["uploading", "processing", "ready", "failed"] as const;
 export type KnowledgeStatus = (typeof KNOWLEDGE_STATUSES)[number];
 
+/** Pasted text limit in characters. Well under Vercel's 4.5 MB request body cap, since characters can be multi-byte. */
+export const MAX_PASTE_TEXT_CHARS = 1_000_000;
 export const MAX_CHAT_MESSAGE_LENGTH = 1000;
 export const WIDGET_RATE_LIMIT_PER_MINUTE = 20;
 export const PUBLIC_KEY_PREFIX = "pk_";

@@ -8,6 +8,7 @@ import {
   KNOWLEDGE_FILE_EXTENSIONS,
   MAX_CHAT_MESSAGE_LENGTH,
   MAX_KNOWLEDGE_FILE_BYTES,
+  MAX_PASTE_TEXT_CHARS,
   PLAN_LIMITS,
   PUBLIC_KEY_PREFIX,
   WIDGET_RATE_LIMIT_PER_MINUTE,
@@ -90,16 +91,30 @@ describe("constants", () => {
   });
 });
 
+describe("paste text cap", () => {
+  it("is 1,000,000 characters and accepts the boundary", () => {
+    expect(MAX_PASTE_TEXT_CHARS).toBe(1_000_000);
+    const at = pasteKnowledgeInputSchema.safeParse({ title: "FAQ", text: "a".repeat(MAX_PASTE_TEXT_CHARS) });
+    const over = pasteKnowledgeInputSchema.safeParse({ title: "FAQ", text: "a".repeat(MAX_PASTE_TEXT_CHARS + 1) });
+    expect(at.success).toBe(true);
+    expect(over.success).toBe(false);
+  });
+});
+
 describe("error shape", () => {
-  it("maps codes to 400, 401, 402, 404, 429", () => {
-    expect(Object.values(API_ERROR_STATUS).sort()).toEqual([400, 401, 402, 404, 429]);
+  it("maps codes to 400, 401, 402, 404, 429 (twice) and 500", () => {
+    expect(Object.values(API_ERROR_STATUS).sort()).toEqual([400, 401, 402, 404, 429, 429, 500]);
     expect(API_ERROR_STATUS.unauthorized).toBe(401);
+    expect(API_ERROR_STATUS.quota_exceeded).toBe(429);
+    expect(API_ERROR_STATUS.internal_error).toBe(500);
   });
 
   it("parses a valid error and rejects an unknown code", () => {
     expect(ApiErrorResponse.safeParse({ error: { code: "unauthorized", message: "Sign in" } }).success).toBe(true);
     expect(ApiErrorResponse.safeParse({ error: { code: "teapot", message: "x" } }).success).toBe(false);
     expect(ApiErrorCode.safeParse("rate_limited").success).toBe(true);
+    expect(ApiErrorCode.safeParse("quota_exceeded").success).toBe(true);
+    expect(ApiErrorCode.safeParse("internal_error").success).toBe(true);
   });
 });
 

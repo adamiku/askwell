@@ -6,6 +6,7 @@ import {
   KNOWLEDGE_TYPES,
   MAX_CHAT_MESSAGE_LENGTH,
   MAX_KNOWLEDGE_FILE_BYTES,
+  MAX_PASTE_TEXT_CHARS,
   PUBLIC_KEY_PREFIX,
 } from "./constants";
 import { PLANS, WIDGET_ANIMATIONS, WIDGET_POSITIONS } from "./plans";
@@ -116,7 +117,7 @@ export type DeleteProjectOutput = Ok;
 /** POST /api/projects/:id/knowledge (paste text) */
 export const pasteKnowledgeInputSchema = z.object({
   title: z.string().trim().min(1).max(200),
-  text: z.string().trim().min(1).max(MAX_KNOWLEDGE_FILE_BYTES),
+  text: z.string().trim().min(1).max(MAX_PASTE_TEXT_CHARS),
 });
 export type PasteKnowledgeInput = z.infer<typeof pasteKnowledgeInputSchema>;
 export const pasteKnowledgeOutputSchema = z.object({ source: knowledgeSourceSchema });
